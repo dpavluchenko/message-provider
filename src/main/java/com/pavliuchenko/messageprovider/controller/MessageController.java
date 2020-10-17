@@ -17,7 +17,7 @@ public class MessageController {
 
     @PostMapping
     public Flux<Boolean> create(@RequestBody String message) {
-        return messageProducerService.sendMessage(message);
+        return messageProducerService.produceMessage(message);
     }
 
 }

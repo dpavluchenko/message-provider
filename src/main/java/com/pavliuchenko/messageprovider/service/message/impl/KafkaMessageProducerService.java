@@ -1,7 +1,8 @@
-package com.pavliuchenko.messageprovider.service.message;
+package com.pavliuchenko.messageprovider.service.message.impl;
 
 import com.pavliuchenko.messageprovider.domain.entity.Message;
 import com.pavliuchenko.messageprovider.repository.MessageRepository;
+import com.pavliuchenko.messageprovider.service.message.MessageProducerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -21,7 +22,7 @@ public class KafkaMessageProducerService implements MessageProducerService {
     private final MessageRepository messageRepository;
 
     @Override
-    public Flux<Boolean> sendMessage(String messageContent) {
+    public Flux<Boolean> produceMessage(String messageContent) {
         return kafkaSender.send(messageRepository.save(Message.builder()
                 .content(messageContent).build())
                 .map(message -> SenderRecord.create(new ProducerRecord<>(currentTopic.name(),
