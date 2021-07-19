@@ -1,6 +1,6 @@
 package com.pavliuchenko.messageprovider.service.message.impl;
 
-import com.pavliuchenko.messageprovider.domain.entity.Message;
+import com.pavliuchenko.messageprovider.model.message.MessageEvent;
 import com.pavliuchenko.messageprovider.service.message.MessageConsumerService;
 import com.pavliuchenko.messageprovider.service.message.MessageSender;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,13 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class KafkaMessageConsumerService implements MessageConsumerService {
 
-    private final KafkaReceiver<Long, Message> kafkaReceiver;
+    private final KafkaReceiver<Long, MessageEvent> kafkaReceiver;
     private final MessageSender messageSender;
 
     @PostConstruct
     private void init() {
         kafkaReceiver.receive()
-                .flatMap(record -> messageSender.sendMessage(record.value()))
+                .flatMap(messageRecord -> messageSender.sendMessage(messageRecord.value()))
                 .subscribe();
     }
 }

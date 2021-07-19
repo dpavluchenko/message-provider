@@ -38,7 +38,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String createTokenForUser(UserInfo user) {
-        JwtInfo jwtInfo = JwtInfo.fromUser(user);
+        var jwtInfo = JwtInfo.fromUser(user);
         return Jwts.builder()
                 .setHeaderParam("alg", SignatureAlgorithm.RS256.getValue())
                 .setClaims(jwtInfo.getClaims())

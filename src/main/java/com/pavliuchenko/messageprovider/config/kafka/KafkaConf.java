@@ -1,6 +1,6 @@
 package com.pavliuchenko.messageprovider.config.kafka;
 
-import com.pavliuchenko.messageprovider.domain.entity.Message;
+import com.pavliuchenko.messageprovider.model.message.MessageEvent;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -32,8 +32,8 @@ public class KafkaConf {
     private Integer partitionCount;
 
     @Bean
-    public KafkaSender<Long, Message> producer(){
-        var senderOptions = SenderOptions.<Long, Message>create(Map.of(
+    public KafkaSender<Long, MessageEvent> producer(){
+        var senderOptions = SenderOptions.<Long, MessageEvent>create(Map.of(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers(),
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class,
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class)
@@ -43,12 +43,12 @@ public class KafkaConf {
     }
 
     @Bean
-    public KafkaReceiver<Long, Message> consumer() {
-        var deserializer = new JsonDeserializer<>(Message.class);
+    public KafkaReceiver<Long, MessageEvent> consumer() {
+        var deserializer = new JsonDeserializer<>(MessageEvent.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);
-        ReceiverOptions<Long, Message> receiverOptions = ReceiverOptions.<Long, Message>create(Map.of(
+        var receiverOptions = ReceiverOptions.<Long, MessageEvent>create(Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers(),
                 ConsumerConfig.GROUP_ID_CONFIG, kafkaProperties.getConsumer().getGroupId(),
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class,
