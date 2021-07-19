@@ -55,17 +55,17 @@ public class SecurityConfig {
     }
 
     private WebFilter createBasicFilter() {
-        UserDetailsRepositoryReactiveAuthenticationManager manager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+        var manager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
         manager.setPasswordEncoder(passwordEncoder());
-        AuthenticationWebFilter filter = new AuthenticationWebFilter(manager);
+        var filter = new AuthenticationWebFilter(manager);
         filter.setServerAuthenticationConverter(new FormLoginAuthenticationConverter());
         filter.setAuthenticationSuccessHandler(new BasicAuthSuccessHandler(jwtService));
         return filter;
     }
 
     private WebFilter createJwtAuthFilter() {
-        JwtReactiveAuthenticationManager manager = new JwtReactiveAuthenticationManager();
-        AuthenticationWebFilter filter = new AuthenticationWebFilter(manager);
+        var manager = new JwtReactiveAuthenticationManager();
+        var filter = new AuthenticationWebFilter(manager);
         filter.setServerAuthenticationConverter(new JwtToAuthenticationConverter(jwtService));
         filter.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers(getJwtPatterns()));
         return filter;

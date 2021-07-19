@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/secure/api/message")
 @RequiredArgsConstructor
@@ -16,8 +18,8 @@ public class MessageController {
     private final MessageProducerService messageProducerService;
 
     @PostMapping
-    public Flux<Boolean> create(@RequestBody String message) {
-        return messageProducerService.produceMessage(message);
+    public Flux<Boolean> create(@RequestBody Map<String, String> messageInfo) {
+        return messageProducerService.produceMessage(messageInfo);
     }
 
 }

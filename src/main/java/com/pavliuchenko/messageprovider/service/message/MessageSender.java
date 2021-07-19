@@ -1,8 +1,8 @@
 package com.pavliuchenko.messageprovider.service.message;
 
-import com.pavliuchenko.messageprovider.domain.entity.Message;
+import com.pavliuchenko.messageprovider.model.message.MessageEvent;
 import reactor.core.publisher.Mono;
 
 public interface MessageSender {
-    Mono<Void> sendMessage(Message message);
+    Mono<Boolean> sendMessage(MessageEvent messageEvent);
 }

@@ -40,11 +40,11 @@ public class RsaKeyService implements KeyService {
     }
 
     private KeyPair create(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
-        X509EncodedKeySpec publicSpec =
+        var publicSpec =
                 new X509EncodedKeySpec(publicKey);
-        PKCS8EncodedKeySpec privateSpec =
+        var privateSpec =
                 new PKCS8EncodedKeySpec(privateKey);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        var keyFactory = KeyFactory.getInstance("RSA");
         return new KeyPair(keyFactory.generatePublic(publicSpec), keyFactory.generatePrivate(privateSpec));
     }
 
